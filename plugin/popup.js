@@ -17,59 +17,63 @@ const uriHandler = (uri) => {
     qrcode.makeCode(uri);
 };
 const mnidAddress = '2ofvFxrcZ516h7C9Ag3qu62cfDLabAQAcFH';
+const signingKey = 'a035e426dfbd739e2c7a933e965eda7a0464c579e823666759f3e7e86d84251e';
 
 var uport = new uportconnect.Connect('Pravda', {
     uriHandler: uriHandler,
     clientId: mnidAddress,
     network: 'rinkeby',
+    signer: uportconnect.SimpleSigner(signingKey)
 });
 
 const contractAbi = [
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "hash",
-				"type": "uint256"
-			}
-		],
-		"name": "create",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "articles",
-		"outputs": [
-			{
-				"components": [
-					{
-						"name": "score",
-						"type": "uint8"
-					}
-				],
-				"name": "metadata",
-				"type": "tuple"
-			},
-			{
-				"name": "exists",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	}
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "hash",
+        "type": "uint256"
+      },
+      {
+        "name": "validatorAddr",
+        "type": "string"
+      }
+    ],
+    "name": "flagAsFake",
+    "outputs": [],
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "flaggedArticles",
+    "outputs": [
+      {
+        "name": "exists",
+        "type": "bool"
+      },
+      {
+        "name": "reporter",
+        "type": "address"
+      },
+      {
+        "name": "validator",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  }
 ];
-const contractAddress = '0x9a9f619c9ed10831f68493181e4152e9abcec34c';
+const contractAddress = '0x63a00a3a61906db8ff28b6e8672bebbd59f770b7';
 
 const web3 = uport.getWeb3();
 const myContractABI = web3.eth.contract(contractAbi);
@@ -97,12 +101,14 @@ const pollingLoop = (txHash, response, pendingCB, successCB) => {
     })
   }, 1000) // check again in one sec.
 }
-uport.requestCredentials()
+uport.requestCredentials({requested: ['name'],  verified: ['digitalid']})
     .then((credentials) => {
         var decodedId = uportconnect.MNID.decode(credentials.address);
         var specificNetworkAddress = decodedId.address;
+        var validatorAddress = credentials.verified[0].iss;
+
         alert(hash);
-        myContract.create("0x" + hash.toString(), (error, txHash) => {
+        myContract.flagAsFake("0x" + hash.toString(), validatorAddress.toString(), (error, txHash) => {
             if (error) {
                 throw error;
             }
