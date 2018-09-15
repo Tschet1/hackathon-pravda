@@ -118,6 +118,7 @@ chrome.storage.sync.get(['credentials'], function(result) {
       function pendingCB () {
       qrcode.clear();
       document.getElementById('qrcode').setAttribute("style", "display:none");
+      document.getElementById('instruction').setAttribute("style", "display:none");
       document.getElementById('waiting').setAttribute("style", "display:initial");
       // Signal to the user you're still waiting
       // for a block confirmation
@@ -142,39 +143,34 @@ chrome.storage.sync.get(['credentials'], function(result) {
 
     chrome.storage.sync.set({credentials: credentials}, function () {
       console.log('Value is set to ' + credentials);
+
+        //alert(hash);
+        myContract.flagAsFake("0x" + hash.toString(), validatorAddress.toString(), (error, txHash) => {
+            if (error) {
+                throw error;
+            }
+            waitForMined(txHash, { blockNumber: null }, // see next area
+                function pendingCB () {
+                    qrcode.clear();
+                    document.getElementById('qrcode').setAttribute("style", "display:none");
+                    document.getElementById('instruction').setAttribute("style", "display:none");
+                    document.getElementById('waiting').setAttribute("style", "display:initial");
+                    // Signal to the user you're still waiting
+                    // for a block confirmation
+                    //alert("Waiting for feedback");
+                },
+                function successCB (data) {
+                    // Great Success!
+                    alert("This page was successfully marked as fake.");
+                    window.close();
+                });
+        });
     });
 
-    //alert(hash);
-    myContract.flagAsFake("0x" + hash.toString(), validatorAddress.toString(), (error, txHash) => {
-      if (error) {
-        throw error;
-      }
-      waitForMined(txHash, {blockNumber: null}, // see next area
-      function pendingCB()
-    {
-      qrcode.clear();
-      document.getElementById('qrcode').setAttribute("style", "display:none");
-      document.getElementById('waiting').setAttribute("style", "display:initial");
-      // Signal to the user you're still waiting
-      // for a block confirmation
-      //alert("Waiting for feedback");
-    }
-  ,
-    function successCB (data) {
-      // Great Success!
-      alert("This page was successfully marked as fake.");
-      window.close();
-    }
+  });
+    
 
-  )
-    ;
-  })
-    ;
-  })
-    ;
-
-  }
-
-})
+}
+});
 
 
