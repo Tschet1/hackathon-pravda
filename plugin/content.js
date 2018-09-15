@@ -52,6 +52,10 @@ var abi = [
 
 var address = "0x63a00a3a61906db8ff28b6e8672bebbd59f770b7";
 
+chrome.runtime.sendMessage(0, function(response) {
+        console.log("Done " + response);
+    });
+
 var contract = new web3.eth.Contract(abi, address);
 
 var address = window.location.href;
