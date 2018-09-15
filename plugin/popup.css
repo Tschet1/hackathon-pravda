@@ -3,6 +3,12 @@ body {
     width: 600px;
     outline: none;
 }
+#logo{
+    width:100px;
+    position: fixed;
+    right: 10px;
+    top: 10px;
+}
 #qrcode {
     padding-top: 25px;
     padding-bottom: 25px;
@@ -111,4 +117,7 @@ h1,h5{
 }
 .fa-bars {
     font-size: large;
+    position: fixed;
+    left: 20px;
+    top: 20px;
 }

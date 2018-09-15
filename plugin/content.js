@@ -63,6 +63,10 @@ console.log(address);
 console.log(hash);
 
 var ret = contract.methods.flaggedArticles("0x" + hash.toString()).call(function(err,ret){
+    if(err){
+        console.log(err);
+        return;
+    }
     console.log("Is it fake news?: " + ret.exists);
     var req;
     if (ret.exists) {

@@ -126,7 +126,12 @@ chrome.storage.sync.get(['credentials'], function(result) {
     },
     function successCB (data) {
       // Great Success!
-      alert("This page was successfully marked as fake.");
+        chrome.notifications.create( {
+            type: "basic",
+            title: "Success!",
+            message: "This page was successfully marked as fake.",
+            iconUrl: "images/logo.png"
+        }, function(){});
       window.close();
     });
   });

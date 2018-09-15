@@ -2,7 +2,7 @@
   "name": "Pravda news",
   "version": "1.0",
   "description": "Fight the fake news!",
-  "permissions": ["tabs", "declarativeContent","storage", "activeTab"],
+  "permissions": ["tabs", "declarativeContent","storage", "activeTab", "notifications"],
   "background": {
       "scripts": ["background.js"],
       "persistent": false

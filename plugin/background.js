@@ -8,20 +8,8 @@ chrome.runtime.onInstalled.addListener(function() {
     chrome.storage.sync.set({color: '#3aa757'}, function() {
         console.log("The color is green.");
     });
-/*
-    chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-        chrome.declarativeContent.onPageChanged.addRules([{
-            conditions: [new chrome.declarativeContent.PageStateMatcher({
-                pageUrl: {hostEquals: 'developer.chrome.com'},
-            })
-            ],
-            actions: [new chrome.declarativeContent.ShowPageAction()]
-        }]);
-    });
-*/
 });
 
-//TODO: if message arrives change icon to not trusted
 
 function log(){
     updateIcon();
@@ -31,7 +19,12 @@ function log(){
 function updateIcon(request) {
     if(request.exists == 1 || request.exists == true){
         chrome.browserAction.setIcon({path: 'images/declined128.png'});
-        alert("Attention: this page could contain fake news!\nReported by:\n" + request.reporter + "\nVerified by:\n" + request.validator);
+        chrome.notifications.create( {
+            type: "basic",
+            title: "Fake news!",
+            message: "Attention: this page could contain fake news!\nReported by:\n" + request.reporter + "\nVerified by:\n" + request.validator,
+            iconUrl: "images/srf.png"
+        }, function(){});
     } else {
         chrome.browserAction.setIcon({path: 'images/get_started128.png'});
     }
