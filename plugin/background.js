@@ -30,8 +30,10 @@ function log(){
 
 function updateIcon(request) {
     if(request == 1){
-        chrome.browserAction.setIcon({path: 'images/declined32.png'});
+        chrome.browserAction.setIcon({path: 'images/declined128.png'});
         alert("You should not believe this...!");
+    } else {
+        chrome.browserAction.setIcon({path: 'images/get_started128.png'});
     }
 
     //chrome.browserAction.setBadgeText({text:"100"});
