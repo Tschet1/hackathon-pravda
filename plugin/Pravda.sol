@@ -1,18 +1,25 @@
-pragma solidity ^0.4.0;
-contract Pravda {
-    struct Metadata {
-        uint8 score;
-    }
-    
-    struct Article{
-        Metadata metadata;
-        bool exists;
-    }
-    
-    mapping(uint256 => Article) public articles;
+pragma solidity ^0.4.14;
 
-    /// add article
-    function create(uint256 hash) public {
-        articles[hash].exists = true;
+contract Pravda {
+    
+    struct Reporters {
+        bool exists;
+        address reporter;
+        address validator;
     }
+    
+    mapping(uint256 => Reporters) public flaggedArticles;
+    
+    function flagAsFake(uint256 hash, address validatorAddr) payable public {
+        
+        if (flaggedArticles[hash].exists == false) {
+
+            flaggedArticles[hash] = Reporters({
+                exists: true,
+                reporter: msg.sender,
+                validator: validatorAddr
+            });
+        } 
+    }
+    
 }
