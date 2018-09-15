@@ -107,65 +107,24 @@ uport.requestCredentials({requested: ['name'],  verified: ['digitalid']})
         var specificNetworkAddress = decodedId.address;
         var validatorAddress = credentials.verified[0].iss;
 
-        alert(hash);
+        //alert(hash);
         myContract.flagAsFake("0x" + hash.toString(), validatorAddress.toString(), (error, txHash) => {
             if (error) {
                 throw error;
             }
             waitForMined(txHash, { blockNumber: null }, // see next area
                 function pendingCB () {
+                    qrcode.clear();
+                    document.getElementById('qrcode').setAttribute("style", "display:none");
+                    document.getElementById('waiting').setAttribute("style", "display:initial");
                     // Signal to the user you're still waiting
                     // for a block confirmation
                     //alert("Waiting for feedback");
                 },
                 function successCB (data) {
                     // Great Success!
-                    alert("Likely you'll call some eventPublisherMethod(txHash, data)");
+                    alert("This page was successfully marked as fake.");
+                    window.close();
                 });
         });
     });
-/*
-const mnidAddress = '2ofvFxrcZ516h7C9Ag3qu62cfDLabAQAcFH';
-const appName = 'Pravda';
-
-const uriHandler = (uri) => {
-  new QRCode(document.getElementById("qrcode"), uri);
-  alert(uri);
-};
-
-const uport = new uportconnect.Connect(appName, {
-  uriHandler,
-  clientId: mnidAddress,
-  network: 'rinkeby',
-});
-
-
-// Request credentials
-uport.requestCredentials({
-  requested: ['name'],  verified: ['digitalid'],
-  }).then((credentials) => {
-  console.log(credentials);
-
-  var decodedId = uportConnect.MNID.decode(credentials.address);
-  var specificNetworkAddress = decodedId.address;
-
-  myContract.create(13, (error, txHash) => {
-    if (error) {
-      throw error;
-    }
-    waitForMined(txHash, { blockNumber: null }, // see next area
-    function pendingCB () {
-    // Signal to the user you're still waiting
-    // for a block confirmation
-    alert("Waiting for feedback");
-  },
-    function successCB (data) {
-      // Great Success!
-      alert("Likely you'll call some eventPublisherMethod(txHash, data)");
-    });
-  });
-
-
-});
-
-*/
