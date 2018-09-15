@@ -57,9 +57,9 @@ var hash = sha256(address);
 console.log(address);
 console.log(hash);
 
-var ret = contract.methods.articles(12).call(function(err,ret){
-    console.log(ret);
-    chrome.runtime.sendMessage(1, function(response) {
+var ret = contract.methods.articles("0x" + hash.toString()).call(function(err,ret){
+    console.log(ret.exists);
+    chrome.runtime.sendMessage(ret.exists, function(response) {
         console.log("Done " + response);
     });
 });

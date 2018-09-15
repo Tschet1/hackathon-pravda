@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "uport-connect": "^0.7.6",
     "web3": "^1.0.0-beta.36"
   }
 }

@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <style>
-      button {
-        height: 30px;
-        width: 30px;
-        outline: none;
-        color: red;
-        background-color: red;
-      }
-    </style>
-  </head>
-  <body>
-    <button id="changeColor"></button>
-    <script src="popup.js"></script>
-  </body>
+    <head>
+        <style>
+body {
+    height: 300px;
+    width: 600px;
+    outline: none;
+}
+#qrcode {
+    height: 50px;
+    width: 50px;
+        background-color: 50px;
+}
+        </style>
+    </head>
+    <body>
+        <div id="qrcode"></div>
+        <script src="uport-connect.js"></script>
+        <script src="bower_components/js-sha256/build/sha256.min.js"></script>
+        <script src="qrcode.js"></script>
+        <script src="popup.js"></script>
+    </body>
 </html>
