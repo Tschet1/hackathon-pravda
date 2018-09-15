@@ -116,6 +116,7 @@ uport.requestCredentials({requested: ['name'],  verified: ['digitalid']})
                 function pendingCB () {
                     qrcode.clear();
                     document.getElementById('qrcode').setAttribute("style", "display:none");
+                    document.getElementById('instruction').setAttribute("style", "display:none");
                     document.getElementById('waiting').setAttribute("style", "display:initial");
                     // Signal to the user you're still waiting
                     // for a block confirmation
