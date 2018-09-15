@@ -1,0 +1,15 @@
+{
+  "name": "uport-pravda",
+  "version": "0.0.1",
+  "description": "trusted news sources prototype",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "qrcode-terminal": "^0.12.0",
+    "uport-connect": "^0.7.6"
+  }
+}
