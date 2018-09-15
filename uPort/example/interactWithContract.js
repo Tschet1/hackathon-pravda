@@ -7,50 +7,53 @@ const mnidAddress = '2ofvFxrcZ516h7C9Ag3qu62cfDLabAQAcFH';
 const signingKey = 'a035e426dfbd739e2c7a933e965eda7a0464c579e823666759f3e7e86d84251e';
 const appName = 'Pravda';
 const contractAbi = [
-  { "constant": false,
-  "inputs": [
   {
-    "name": "hash",
-    "type": "uint256"
-  }
-],
-  "name": "create",
-  "outputs": [],
-  "payable": false,
-  "stateMutability": "nonpayable",
-  "type": "function"
-},
-{
-  "constant": true,
-  "inputs": [
-  {
-    "name": "",
-    "type": "uint256"
-  }
-],
-  "name": "articles",
-  "outputs": [
-  {
-    "components": [
+    "constant": false,
+    "inputs": [
       {
-        "name": "score",
-        "type": "uint8"
+        "name": "hash",
+        "type": "uint256"
+      },
+      {
+        "name": "validatorAddr",
+        "type": "string"
       }
     ],
-    "name": "metadata",
-    "type": "tuple"
+    "name": "flagAsFake",
+    "outputs": [],
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "function"
   },
   {
-    "name": "exists",
-    "type": "bool"
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "flaggedArticles",
+    "outputs": [
+      {
+        "name": "exists",
+        "type": "bool"
+      },
+      {
+        "name": "reporter",
+        "type": "address"
+      },
+      {
+        "name": "validator",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
   }
-],
-  "payable": false,
-  "stateMutability": "view",
-  "type": "function"
-}
 ];
-const contractAddress = '0x9a9f619c9ed10831f68493181e4152e9abcec34c';
+const contractAddress = '0x63a00a3a61906db8ff28b6e8672bebbd59f770b7';
 
 const uriHandler = (uri) => {
   qrcode.generate(uri, {small: true})
@@ -77,8 +80,13 @@ uport.requestCredentials({
   var decodedId = uportConnect.MNID.decode(credentials.address);
   var specificNetworkAddress = decodedId.address;
 
-  myContract.create(13, (error, txHash) => {
+  var validatorAddress = credentials.verified[0].iss;
+  var validatorId = uportConnect.MNID.decode(validatorAddress);
+  console.log(validatorId);
+
+  myContract.flagAsFake(1234, validatorAddress.toString(), (error, txHash) => {
     if (error) {
+      console.log(err);
       throw error;
     }
     waitForMined(txHash, { blockNumber: null }, // see next area
