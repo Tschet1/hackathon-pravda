@@ -65,6 +65,7 @@ var ret = contract.methods.articles("0x" + hash.toString()).call(function(err,re
     console.log(ret.exists);
     chrome.runtime.sendMessage(ret.exists, function(response) {
         console.log("Done " + response);
+        document.getElementsByTagName('body')[0].setAttribute("style", "background-color: #F89090;");
     });
 });
 
