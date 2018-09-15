@@ -29,9 +29,9 @@ function log(){
 }
 
 function updateIcon(request) {
-    if(request == 1){
+    if(request.exists == 1 || request.exists == true){
         chrome.browserAction.setIcon({path: 'images/declined128.png'});
-        alert("Attention: this page could contain fake news!");
+        alert("Attention: this page could contain fake news!\nReported by:\n" + request.reporter + "\nVerified by:\n" + request.validator);
     } else {
         chrome.browserAction.setIcon({path: 'images/get_started128.png'});
     }
@@ -42,6 +42,6 @@ function updateIcon(request) {
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
       updateIcon(request);
-      console.log("received value " + request);
+      console.log("received value " + request.exists);
       sendResponse(request);
   });

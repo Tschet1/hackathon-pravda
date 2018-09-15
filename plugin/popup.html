@@ -3,26 +3,32 @@
     <head>
         <style>
 body {
-    height: 425px;
+    min-height: 425px;
     width: 600px;
     outline: none;
 }
 #qrcode {
     padding-top: 25px;
-    height: 125px;
-    width: 125px;
+    padding-bottom: 25px;
+    height: 250px;
+    width: 250px;
     padding-left: 175px; 
 }
-
 h1{
     padding-top: 10px;
     text-align: center;
+}
+#fake_text{
+    text-align: center;
+    width: 100%;
+    display: none;
 }
         </style>
     </head>
     <body>
         <h1>Mark this page as fake</h1>
         <div id="qrcode"></div>
+        <div id="fake_text">This page was marked as fake by:<div id="fake_id"></div></div>
         <script src="uport-connect.js"></script>
         <script src="bower_components/js-sha256/build/sha256.min.js"></script>
         <script src="qrcode.js"></script>

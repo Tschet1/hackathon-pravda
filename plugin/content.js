@@ -53,7 +53,6 @@ var abi = [
 var address = "0x63a00a3a61906db8ff28b6e8672bebbd59f770b7";
 
 chrome.runtime.sendMessage(0, function(response) {
-        console.log("Done " + response);
     });
 
 var contract = new web3.eth.Contract(abi, address);
@@ -65,13 +64,25 @@ console.log(hash);
 
 var ret = contract.methods.flaggedArticles("0x" + hash.toString()).call(function(err,ret){
     console.log("Is it fake news?: " + ret.exists);
+    var req;
     if (ret.exists) {
-      console.log("Reporter: " + ret.reporter);
-      console.log("Validator: " + ret.validator);
+        console.log("Reporter: " + ret.reporter);
+        console.log("Validator: " + ret.validator);
+        req = {
+            reporter: ret.reporter,
+            validator: ret.validator,
+            exists: ret.exists
+        }
+    } else {
+        req = {
+            exists: ret.exists
+        }
     }
-    chrome.runtime.sendMessage(ret.exists, function(response) {
+    chrome.runtime.sendMessage(req, function(response) {
         console.log("Done " + response);
-        document.getElementsByTagName('body')[0].setAttribute("style", "background-color: #F89090;");
+        if(ret.exists){
+            document.getElementsByTagName('body')[0].setAttribute("style", "background-color: #F89090; color: darkred;");
+        }
     });
 });
 
