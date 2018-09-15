@@ -19,7 +19,7 @@ const uriHandler = (uri) => {
 const mnidAddress = '2ofvFxrcZ516h7C9Ag3qu62cfDLabAQAcFH';
 const signingKey = 'a035e426dfbd739e2c7a933e965eda7a0464c579e823666759f3e7e86d84251e';
 
-var uport = new uportconnect.Connect('Pravda', {
+const uport = new uportconnect.Connect('Pravda', {
     uriHandler: uriHandler,
     clientId: mnidAddress,
     network: 'rinkeby',
@@ -101,30 +101,80 @@ const pollingLoop = (txHash, response, pendingCB, successCB) => {
     })
   }, 1000) // check again in one sec.
 }
-uport.requestCredentials({requested: ['name'],  verified: ['digitalid']})
-    .then((credentials) => {
-        var decodedId = uportconnect.MNID.decode(credentials.address);
-        var specificNetworkAddress = decodedId.address;
-        var validatorAddress = credentials.verified[0].iss;
 
-        //alert(hash);
-        myContract.flagAsFake("0x" + hash.toString(), validatorAddress.toString(), (error, txHash) => {
-            if (error) {
-                throw error;
-            }
-            waitForMined(txHash, { blockNumber: null }, // see next area
-                function pendingCB () {
-                    qrcode.clear();
-                    document.getElementById('qrcode').setAttribute("style", "display:none");
-                    document.getElementById('waiting').setAttribute("style", "display:initial");
-                    // Signal to the user you're still waiting
-                    // for a block confirmation
-                    //alert("Waiting for feedback");
-                },
-                function successCB (data) {
-                    // Great Success!
-                    alert("This page was successfully marked as fake.");
-                    window.close();
-                });
-        });
+chrome.storage.sync.get(['credentials'], function(result) {
+  if (typeof result.credentials !== "undefined") {
+    //alert(JSON.stringify(result.credentials));
+
+    var decodedId = uportconnect.MNID.decode(result.credentials.address);
+    var specificNetworkAddress = decodedId.address;
+    var validatorAddress = result.credentials.verified[0].iss;
+
+    myContract.flagAsFake("0x" + hash.toString(), validatorAddress.toString(), (error, txHash) => {
+      if (error) {
+        throw error;
+      }
+      waitForMined(txHash, { blockNumber: null }, // see next area
+      function pendingCB () {
+      qrcode.clear();
+      document.getElementById('qrcode').setAttribute("style", "display:none");
+      document.getElementById('waiting').setAttribute("style", "display:initial");
+      // Signal to the user you're still waiting
+      // for a block confirmation
+      //alert("Waiting for feedback");
+    },
+    function successCB (data) {
+      // Great Success!
+      alert("This page was successfully marked as fake.");
+      window.close();
     });
+  });
+
+  } else {
+    console.log("credential not found");
+    //alert(JSON.stringify(result));
+
+    uport.requestCredentials({requested: ['name'], verified: ['digitalid']})
+      .then((credentials) => {
+      var decodedId = uportconnect.MNID.decode(credentials.address);
+    var specificNetworkAddress = decodedId.address;
+    var validatorAddress = credentials.verified[0].iss;
+
+    chrome.storage.sync.set({credentials: credentials}, function () {
+      console.log('Value is set to ' + credentials);
+    });
+
+    //alert(hash);
+    myContract.flagAsFake("0x" + hash.toString(), validatorAddress.toString(), (error, txHash) => {
+      if (error) {
+        throw error;
+      }
+      waitForMined(txHash, {blockNumber: null}, // see next area
+      function pendingCB()
+    {
+      qrcode.clear();
+      document.getElementById('qrcode').setAttribute("style", "display:none");
+      document.getElementById('waiting').setAttribute("style", "display:initial");
+      // Signal to the user you're still waiting
+      // for a block confirmation
+      //alert("Waiting for feedback");
+    }
+  ,
+    function successCB (data) {
+      // Great Success!
+      alert("This page was successfully marked as fake.");
+      window.close();
+    }
+
+  )
+    ;
+  })
+    ;
+  })
+    ;
+
+  }
+
+})
+
+
