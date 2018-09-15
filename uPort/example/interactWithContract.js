@@ -3,9 +3,9 @@
 const uportConnect = require('uport-connect');
 const qrcode = require('qrcode-terminal');
 
-const mnidAddress = '2of2kCbrQbhhS5i3kQByM5w1d4b6PD8Y1xe';
-const signingKey = 'c7c478119b3048207e813f61c652b3f23849c3bf4c85aa37bd565ad16e70f3d4';
-const appName = 'SRF Digital ID';
+const mnidAddress = '2ofvFxrcZ516h7C9Ag3qu62cfDLabAQAcFH';
+const signingKey = 'a035e426dfbd739e2c7a933e965eda7a0464c579e823666759f3e7e86d84251e';
+const appName = 'Pravda';
 const contractAbi = [
   { "constant": false,
   "inputs": [
