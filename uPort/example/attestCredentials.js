@@ -29,8 +29,8 @@ uport.requestCredentials({
    setTimeout(() => {
         // Attest Credentials
         uport.attestCredentials({
-            sub: "2ovxN4ajDAPdS4UdAKsgJsT1aLYPZWTrShi",
-            claim: { digitalid: 'verified', name: 'Christian', surname: 'Raemy', job: 'Journalist'},
+            sub: "2owGBetwvzMCw7igY8RAcFKZcbJUpcYppPM",
+            claim: { digitalid: 'verified', name: 'Jan', surname: 'Muller', job: 'Rocket Scientist'},
             exp: new Date().getTime() + 48 * 60 * 60 * 1000,  // Optional expiration
         });
 

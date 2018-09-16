@@ -82,6 +82,7 @@ uport.requestCredentials({
 
   var validatorAddress = credentials.verified[0].iss;
   var validatorId = uportConnect.MNID.decode(validatorAddress);
+  console.log(validatorAddress);
   console.log(validatorId);
 
   myContract.flagAsFake(1234, validatorAddress.toString(), (error, txHash) => {
